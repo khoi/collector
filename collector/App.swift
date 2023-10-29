@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import Foundation
 import SwiftUI
 
 @main
@@ -25,14 +26,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         store.send(.applicationDidFinishLaunching)
-    }
-
-    func applicationDidBecomeActive(_ notification: Notification) {
-        store.send(.applicationDidBecomeActive)
-    }
-
-    func applicationDidResignActive(_ notification: Notification) {
-        store.send(.applicationDidResignActive)
     }
 
     func applicationWillTerminate(_ notification: Notification) {

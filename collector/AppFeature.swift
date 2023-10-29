@@ -1,3 +1,4 @@
+import AppKit
 import ComposableArchitecture
 import Foundation
 import SwiftUI
@@ -9,11 +10,13 @@ struct AppFeature: Reducer {
 
     enum Action: Equatable {
         case applicationDidFinishLaunching
-        case applicationDidBecomeActive
-        case applicationDidResignActive
         case applicationWillTerminate
-
         case accessibilityPermissionChanged(Bool)
+        case frontMostApplicationChanged(NSRunningApplication)
+    }
+
+    private enum CancelID: Hashable {
+        case frontMostApplication
     }
 
     @Dependency(\.watcherService) var watcherService
@@ -28,10 +31,27 @@ struct AppFeature: Reducer {
                 }
             case let .accessibilityPermissionChanged(newValue):
                 state.hasAccessibilityPermission = newValue
+
+                if state.hasAccessibilityPermission {
+                    return .run { send in
+                        let notifications = await self.watcherService.frontMostApplication()
+
+                        for try await app in notifications {
+                            if let app {
+                                await send(.frontMostApplicationChanged(app))
+                            }
+                        }
+                    }
+                    .cancellable(id: CancelID.frontMostApplication)
+                }
+
+                return .cancel(id: CancelID.frontMostApplication)
+
+            case let .frontMostApplicationChanged(app):
+
+                print(app)
                 return .none
-            case .applicationWillTerminate,
-                .applicationDidResignActive,
-                .applicationDidBecomeActive:
+            case .applicationWillTerminate:
                 return .none
             }
         }
