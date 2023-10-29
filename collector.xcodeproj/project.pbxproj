@@ -13,6 +13,8 @@
 		D6B526712AECE77C00B28E02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6B526702AECE77C00B28E02 /* Assets.xcassets */; };
 		D6B526992AECE7FC00B28E02 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = D6B526982AECE7FC00B28E02 /* ComposableArchitecture */; };
 		D6B5269C2AECF2FE00B28E02 /* CounterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B5269B2AECF2FE00B28E02 /* CounterTests.swift */; };
+		D6DB7A352AEE421400A1C810 /* WatcherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DB7A342AEE421400A1C810 /* WatcherService.swift */; };
+		D6DB7A392AEE47A000A1C810 /* AXSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D6DB7A382AEE47A000A1C810 /* AXSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +37,7 @@
 		D6B5267A2AECE77C00B28E02 /* collectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = collectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B5269A2AECF00B00B28E02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D6B5269B2AECF2FE00B28E02 /* CounterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterTests.swift; sourceTree = "<group>"; };
+		D6DB7A342AEE421400A1C810 /* WatcherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatcherService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +46,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6B526992AECE7FC00B28E02 /* ComposableArchitecture in Frameworks */,
+				D6DB7A392AEE47A000A1C810 /* AXSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,9 +91,10 @@
 		D6B5266B2AECE77B00B28E02 /* collector */ = {
 			isa = PBXGroup;
 			children = (
+				D6DB7A362AEE423800A1C810 /* Dependencies */,
 				D6B5266C2AECE77B00B28E02 /* App.swift */,
-				D6B5266E2AECE77B00B28E02 /* CounterView.swift */,
 				D6150B162AED019C00A3E05D /* AppFeature.swift */,
+				D6B5266E2AECE77B00B28E02 /* CounterView.swift */,
 				D6150B182AED01AC00A3E05D /* Resources */,
 			);
 			path = collector;
@@ -101,6 +106,14 @@
 				D6B5269B2AECF2FE00B28E02 /* CounterTests.swift */,
 			);
 			path = collectorTests;
+			sourceTree = "<group>";
+		};
+		D6DB7A362AEE423800A1C810 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				D6DB7A342AEE421400A1C810 /* WatcherService.swift */,
+			);
+			path = Dependencies;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -121,6 +134,7 @@
 			name = collector;
 			packageProductDependencies = (
 				D6B526982AECE7FC00B28E02 /* ComposableArchitecture */,
+				D6DB7A382AEE47A000A1C810 /* AXSwift */,
 			);
 			productName = collector;
 			productReference = D6B526692AECE77B00B28E02 /* collector.app */;
@@ -174,6 +188,7 @@
 			mainGroup = D6B526602AECE77B00B28E02;
 			packageReferences = (
 				D6B526972AECE7FC00B28E02 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				D6DB7A372AEE47A000A1C810 /* XCRemoteSwiftPackageReference "AXSwift" */,
 			);
 			productRefGroup = D6B5266A2AECE77B00B28E02 /* Products */;
 			projectDirPath = "";
@@ -210,6 +225,7 @@
 			files = (
 				D6B5266F2AECE77B00B28E02 /* CounterView.swift in Sources */,
 				D6150B172AED019C00A3E05D /* AppFeature.swift in Sources */,
+				D6DB7A352AEE421400A1C810 /* WatcherService.swift in Sources */,
 				D6B5266D2AECE77B00B28E02 /* App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -486,6 +502,14 @@
 				minimumVersion = 1.3.0;
 			};
 		};
+		D6DB7A372AEE47A000A1C810 /* XCRemoteSwiftPackageReference "AXSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tmandry/AXSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -493,6 +517,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D6B526972AECE7FC00B28E02 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		D6DB7A382AEE47A000A1C810 /* AXSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D6DB7A372AEE47A000A1C810 /* XCRemoteSwiftPackageReference "AXSwift" */;
+			productName = AXSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
