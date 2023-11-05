@@ -1,3 +1,4 @@
+import AXSwift
 import AppKit
 import ComposableArchitecture
 import Foundation
@@ -12,7 +13,7 @@ struct AppFeature: Reducer {
         case applicationDidFinishLaunching
         case applicationWillTerminate
         case accessibilityPermissionChanged(Bool)
-        case frontMostApplicationChanged(NSRunningApplication)
+        case frontMostApplicationChanged(ActiveApplication)
     }
 
     private enum CancelID: Hashable {
@@ -25,6 +26,7 @@ struct AppFeature: Reducer {
         Reduce { state, action in
             switch action {
             case .applicationDidFinishLaunching:
+
                 return .run { send in
                     let hasPermission = try watcherService.hasAccess()
                     await send.callAsFunction(.accessibilityPermissionChanged(hasPermission))
@@ -32,23 +34,21 @@ struct AppFeature: Reducer {
             case let .accessibilityPermissionChanged(newValue):
                 state.hasAccessibilityPermission = newValue
 
-                if state.hasAccessibilityPermission {
-                    return .run { send in
-                        let notifications = await self.watcherService.frontMostApplication()
+                guard state.hasAccessibilityPermission else {
+                    return .cancel(id: CancelID.frontMostApplication)
 
-                        for try await app in notifications {
-                            if let app {
-                                await send(.frontMostApplicationChanged(app))
-                            }
-                        }
-                    }
-                    .cancellable(id: CancelID.frontMostApplication)
                 }
 
-                return .cancel(id: CancelID.frontMostApplication)
+                return .run { send in
+                    let notifications = await self.watcherService.frontMostApplication()
+
+                    for try await app in notifications {
+                        await send(.frontMostApplicationChanged(app))
+                    }
+                }
+                .cancellable(id: CancelID.frontMostApplication)
 
             case let .frontMostApplicationChanged(app):
-
                 print(app)
                 return .none
             case .applicationWillTerminate:

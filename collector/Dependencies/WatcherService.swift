@@ -5,8 +5,7 @@ import Foundation
 
 struct WatcherService: Sendable {
     var hasAccess: @Sendable () throws -> Bool
-    var frontMostApplication:
-        @Sendable () async -> AsyncThrowingStream<NSRunningApplication?, Error>
+    var frontMostApplication: @Sendable () async -> AsyncThrowingStream<ActiveApplication, Error>
 }
 
 extension WatcherService: DependencyKey {
@@ -21,8 +20,25 @@ extension WatcherService: DependencyKey {
                         for await _ in NSWorkspace.shared.notificationCenter.notifications(
                             named: NSWorkspace.didActivateApplicationNotification, object: nil)
                         {
-                            continuation.yield(NSWorkspace.shared.frontmostApplication)
+                            guard let application = NSWorkspace.shared.frontmostApplication
+                            else {
+                                return
+                            }
+
+                            guard let applicationName = application.localizedName,
+                                let bundleId = application.bundleIdentifier
+                            else {
+                                assertionFailure("check why application doesn't have data")
+                                return
+                            }
+
+                            continuation.yield(
+                                ActiveApplication(
+                                    name: applicationName,
+                                    bundleId: bundleId
+                                ))
                         }
+
                         continuation.finish()
                     }
                 }
